@@ -1,3 +1,15 @@
+# Set the log file path
+$logFilePath = "C:\BitLockerStatus.log"
+
+# Function to log messages to the file
+function Log-Message {
+    param(
+        [string]$message
+    )
+    
+    Add-content -Path $logFilePath -Value "$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss')) - $message"
+}
+
 # Check if the script is running as administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
@@ -16,6 +28,7 @@ if ($bitlockerStatus -eq 'FullyEncrypted') {
 
     if ($encryptionStatus -eq 100) {
         Write-Host "Device is fully encrypted by BitLocker."
+        Log-Message "BitLocker Status: Fully Encrypted"
     }
     else {
         # If Volume is Decrypted, ask to turn on encryption
@@ -24,9 +37,11 @@ if ($bitlockerStatus -eq 'FullyEncrypted') {
         if ($userInput -eq 'yes') {
             Enable-BitLocker -MountPoint "C:" -RecoveryPasswordProtector -UsedSpaceOnly
             Write-Host "Device drive C is now encrypted."
+            Log-Message "BitLocker Status: Encryption Started"
         }
         else {
             Write-Host "Task ended. Device is not fully encrypted."
+            Log-Message "BitLocker Status: Encryption Not Started"
             exit
         }
     }
@@ -112,7 +127,7 @@ else {
     # Check if Tanium is installed
     $TaniumClientPath = "C:\Program Files\Tanium\TaniumClient\TaniumClient.exe"
     if (Test-Path $TaniumClientPath -PathType Leaf) {
-        Write-Host "Tanium is installed."    
+        Write-Host "Tanium is installed."
     }
     else {
         Write-Host "Tanium is not installed."
@@ -141,9 +156,11 @@ else {
     # Check if all requirements passed
     if ($requirements.ContainsValue($false)) {
         Write-Host "Some requirements failed. Task ended."
+        Log-Message "Requirements Check: Some requirements failed"
     }
     else {
         Write-Host "All requirements passed. Proceed with the next steps."
+        Log-Message "Requirements Check: All requirements passed"
 
         # Check registry for Prod-LT-Encrypt
         $registryPath = "HKLM:\SOFTWARE\WOW6432Node\Tanium\Tanium Client\Sensor Data\Tags"
@@ -154,10 +171,14 @@ else {
 
             if ($null -eq $existingValue) {
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
+                Write-Host "Registry Update: Added registry value"
+                Log-Message "Registry Update: Added registry value"                
             }
             else {
                 Remove-ItemProperty -Path $registryPath -Name $registryName
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
+                Write-Host "Registry Update: Updated registry value"
+                Log-Message "Registry Update: Updated registry value"
             }
         }
         else {
