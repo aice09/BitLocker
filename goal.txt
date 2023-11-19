@@ -1,0 +1,88 @@
+
+Situation 1: If all status is passed show this prompt
+////////Checking Requirements////////
+Requirements:
+TPM: Enabled (PASSED)
+TPM Version: 1.2 (PASSED)
+Firmware Device Type: UEFI (PASSED)
+Secure Boot: Enabled (PASSED)
+OS Version: Window 10 Pro (Passed)
+Storage Capacity: 60.5GB Free Space (PASSED)
+Tanium: Installed (PASSED)
+Registry: Added (PASSED)
+
+////////BitLocker Status///////
+BitLocker Status - Fully Encrypted
+BitLocker Volume Status - Protected On Drive C
+
+Thank you for keeping your drive secured.
+
+Situation 2: If registry is not installed and BitLocker not enabled yet show this prompt
+////////Checking Requirements////////
+Requirements:
+TPM: Enabled (PASSED)
+TPM Version: 1.2 (PASSED)
+Firmware Device Type: UEFI (PASSED)
+Secure Boot: Enabled (PASSED)
+OS Version: Window 10 Pro (Passed)
+Storage Capacity: 60.5GB Free Space (PASSED)
+Tanium: Installed (PASSED)
+Registry: Not Installed (FAILED)
+
+////////BitLocker Status///////
+BitLocker Status - Fully Decrypted
+BitLocker Volume Status - Protected Off
+
+//////////INSTALLING///////////
+- Installing registry. Hold on.
+- Installing registry. Done
+
+Note: Please wait for atleast 30 minutes the Tanium notification to add your recovery password protector
+
+
+Situation 3: If registry is installed but BitLocker not enabled yet show this prompt
+////////Checking Requirements////////
+Requirements:
+TPM: Enabled (PASSED)
+TPM Version: 1.2 (PASSED)
+Firmware Device Type: UEFI (PASSED)
+Secure Boot: Enabled (PASSED)
+OS Version: Window 10 Pro (Passed)
+Storage Capacity: 60.5GB Free Space (PASSED)
+Tanium: Installed (PASSED)
+Registry: Installed (PASSED)
+
+////////BitLocker Status///////
+BitLocker Status - Fully Decrypted
+BitLocker Volume Status - Protected Off
+
+//////////INSTALLING///////////
+- Re-Installing registry. Hold on.
+- Installing registry. Done
+
+Note: Please wait for atleast 30 minutes the Tanium notification to add your recovery password protector
+
+
+
+Situation 4: If registry is installed and BitLocker not ecrypted yet show this prompt
+////////Checking Requirements////////
+Requirements:
+TPM: Enabled (PASSED)
+TPM Version: 1.2 (PASSED)
+Firmware Device Type: UEFI (PASSED)
+Secure Boot: Enabled (PASSED)
+OS Version: Window 10 Pro (Passed)
+Storage Capacity: 60.5GB Free Space (PASSED)
+Tanium: Installed (PASSED)
+Registry: Installed (PASSED)
+
+////////BitLocker Status///////
+BitLocker Status - Fully Decrypted
+BitLocker Volume Status - Protected On
+
+//////////Encrypting///////////
+- Do you want to enable BitLocker?
+
+
+Note: Please wait for prompts to enter a password to unlock the drive
+
