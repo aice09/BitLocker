@@ -38,13 +38,28 @@ if ($bitlockerStatus -eq "FullyEncrypted" -or $bitlockerStatus -eq "EncryptionIn
                Write-Host "Device is fully encrypted by BitLocker."
                Log-Message "BitLocker Status: Fully Encrypted"
        
-           }
-           else {
+           } elseif ($volumeStatus -eq 'On' -and $volume.VolumeStatus -eq 'UsedSpaceOnly') {
+                # If Volume is using UsedSpaceOnly, decrypt the drive
+                $userInput = Read-Host "BitLocker protection is on, but volume is using UsedSpaceOnly. Do you want to decrypt the drive? (yes/no)"
+
+                if ($userInput -eq 'yes') {
+                    Disable-BitLocker -MountPoint "C:" -RebootCount 1
+                    Write-Host "Device drive C is now decrypted. Please reboot your system."
+                    Write-Host "And run this script again after your reboot."
+                    Log-Message "Agreed to decrypt disk."
+                    Log-Message "BitLocker Status: Decryption Started"
+                } else {
+                    Write-Host "Task ended. Device is not fully encrypted."
+                    Log-Message "Disagree to decrypt disk"
+                    Log-Message "BitLocker Status: Decryption Not Started"
+                    exit
+                }
+            } else {
                # If Volume is Decrypted, ask to turn on encryption
                $userInput = Read-Host "BitLocker protection is on, but volume is not fully encrypted. Do you want to turn on encryption? (yes/no)"
                
                if ($userInput -eq 'yes') {
-                   Enable-BitLocker -MountPoint "C:" -RecoveryPasswordProtector -UsedSpaceOnly
+                   Enable-BitLocker -MountPoint "C:" -RecoveryPasswordProtector
                    Write-Host "Device drive C is now encrypted."
                    Log-Message "Agreed to enable disk encryption."
                    Log-Message "BitLocker Status: Encryption Started"
