@@ -51,14 +51,11 @@ for ($step = $totalSteps; $step -ge 1; $step++) {
 
 # Check if the encryption percentage is 100% and prompt for reboot
 if ($progress -eq 100) {
-    $rebootInput = Read-Host "Decryption process is complete. Do you want to reboot your system now? (yes/no)"
-    if ($rebootInput -eq 'yes') {
+    
         Write-Host "Rebooting the system..."
         Log-Message "Rebooting the system."
         Restart-Computer -Force
-    } else {
-        Write-Host "Please reboot your system manually after running this script again."
-    }
+    
 }
 
 # Log the script completion
