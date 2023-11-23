@@ -51,6 +51,8 @@ $version = $osInfo.Caption
 # Registry information
 $registryPath = "HKLM:\SOFTWARE\WOW6432Node\Tanium\Tanium Client\Sensor Data\Tags"
 $registryName = "Prod-LT-Encrypt"
+# Service Now knowledgebase
+$servicenowkb = "https://microchip.service-now.com/sp?sys_kb_id=a009f638978e795456adf8e3a253af15&id=kb_article_view&sysparm_rank=3&sysparm_tsqueryId=792f547f47ae39d44ebca8b5536d430b"
 
 
 #Adding device information for log purpose
@@ -268,6 +270,7 @@ foreach ($drive in $drives) {
                 Remove-ItemProperty -Path $registryPath -Name $registryName
                 Log-Message "Adding new registry file"
                 Write-Host "Note: After some time (~5 to 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
+                Write-Host "Visit the user knowledge base: $servicenowkb"
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
             } else {
                 # The registry value does not exist
@@ -275,6 +278,7 @@ foreach ($drive in $drives) {
                 Log-Message "Registry value $registryName does not exist in $registryPath."                               
                 Log-Message "Adding new registry file"
                 Write-Host "Note: After some time (~5 to 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
+                Write-Host "Visit the user knowledge base: $servicenowkb"
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
             }
         }
