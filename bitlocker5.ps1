@@ -47,7 +47,6 @@ $systemInfo = Get-WmiObject -Class Win32_ComputerSystem
 $SecureBoot=Confirm-SecureBootUEFI
 $storageCapacity = (Get-CimInstance Win32_LogicalDisk | Where-Object { $_.DeviceID -eq "C:" }).FreeSpace
 $TaniumClientPath = "C:\Program Files (x86)\Tanium\Tanium Client\TaniumClient.exe"
-$osInfo = Get-CimInstance Win32_OperatingSystem
 $version = $osInfo.Caption
 # Registry information
 $registryPath = "HKLM:\SOFTWARE\WOW6432Node\Tanium\Tanium Client\Sensor Data\Tags"
@@ -86,7 +85,7 @@ foreach ($drive in $drives) {
         Write-Host "BitLocker is fully encrypted and protection is on."
         Log-Message "BitLocker is fully encrypted and protection is on."
     } elseif ($bitlockerStatus -eq "FullyEncrypted" -and $bitlockerProtectionStatus -eq "Off") {
-        WrLog-Messageite-Host "BitLocker is fully encrypted, but protection is turned off."
+        Log-Message "BitLocker is fully encrypted, but protection is turned off."
         $userInput = Read-Host "BitLocker is fully encrypted, but protection is turned off. Do you want to decrypt the drive? (yes/no)"
 
         if ($userInput -eq 'yes') {
@@ -264,22 +263,18 @@ foreach ($drive in $drives) {
                 # The registry value exists
                 Write-Host "Registry value $registryName exists in $registryPath."
                 Log-Message "Registry value $registryName exists in $registryPath."
-                Write-Host "Reinstalling registry file"
-                Write-Host " "
-                Write-Host "Note: After some time (~5 – 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
-                
+                Write-Host "Reinstalling registry file"                
                 Log-Message "Removing existing registry file"
                 Remove-ItemProperty -Path $registryPath -Name $registryName
                 Log-Message "Adding new registry file"
+                Write-Host "Note: After some time (~5 to 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
             } else {
                 # The registry value does not exist
                 Write-Host "Registry value $registryName does not exist in $registryPath."
-                Log-Message "Registry value $registryName does not exist in $registryPath."
-                Write-Host " "
-                Write-Host "Note: After some time (~5 – 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
-                
+                Log-Message "Registry value $registryName does not exist in $registryPath."                               
                 Log-Message "Adding new registry file"
+                Write-Host "Note: After some time (~5 to 30 minutes), you will receive a prompt from Tanium indicating the user is required to set a unique password used to access the disk."
                 Set-ItemProperty -Path $registryPath -Name $registryName -Value "Added: $(Get-Date -Format 'M/d/yyyy h:mm:ss tt')"
             }
         }
