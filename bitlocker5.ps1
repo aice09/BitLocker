@@ -81,6 +81,8 @@ foreach ($drive in $drives) {
     # Get BitLocker status for the specified volume
     $bitlockerStatus = Get-BitLockerVolume -MountPoint $driveLetter | Select-Object -ExpandProperty VolumeStatus
     $bitlockerProtectionStatus = Get-BitLockerVolume -MountPoint $driveLetter | Select-Object -ExpandProperty ProtectionStatus
+    Log-Message "Drive $driveLetter Volume Status: $bitlockerStatus"
+    Log-Message "Drive $driveLetter Protection Status: $bitlockerProtectionStatus"
     # Check if the volume is fully encrypted or BitLocker protection is on
     if ($bitlockerStatus -eq "FullyEncrypted" -and $bitlockerProtectionStatus -eq "On") {
         # Your code here for the condition when BitLocker is fully encrypted or protection is on
