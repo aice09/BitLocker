@@ -1,3 +1,15 @@
+# Purpose of this script : This script will verify all BitLocker requirements before adding registry file, and if the script check that the devices already encrypted using Used Space Only Encryption it will decrypt the device and ask the user to reboot.
+# Author: Carl Angelo Nievarez - A70458
+# Created Date: 20/November/2023
+# Modified Date: 30/November/2023
+# Tested Devices: Dell 7440, 7430, 7420, 7410 / Lenovo T490
+# Tested OS Platform : Windows 11.XX, 10.XX
+# Usage : 
+#   1. Download this script to local machine in /tmp area and run the script using below method
+#   2. Run the script ./bitlockerOSDrive.ps1
+#   3. Then wait once you get the summary verify and some requirement status fail check the device and fix it then run the script again
+#   4. Optional, copy the even log in the C:\BitLockerStatus.log for your reference to Service Now ticket
+
 # Check if the script is running as administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
